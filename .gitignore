@@ -1,0 +1,10 @@
+.metadata
+JavaGenericEnumTest2
+Servers
+*/.settings
+*/bin
+*/doc
+*/logs
+*/.classpath
+*/.project
+*/build

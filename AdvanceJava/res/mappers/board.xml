@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+<resultMap type="BoardVO" id="BoardMap">
+	<result column="BOARD_NO" property="no"/>
+	<result column="BOARD_TITLE" property="title"/>
+	<result column="BOARD_WRITER" property="writer"/>
+	<result column="BOARD_DATE" property="date"/>
+	<result column="BOARD_CONTENT" property="content"/>
+</resultMap>
+
+<insert id="insert" parameterType="BoardVO" >
+	insert 	into jdbc_board 
+	values 	(board_seq.nextVal, #{title}, #{writer}, 
+			sysdate, #{content})
+</insert>
+
+<update id="update" parameterType="BoardVO">
+	update 	jdbc_board
+	set		board_title = #{title},
+			board_writer = #{writer},
+			board_content = #{content}
+	where  	board_no = #{no}
+</update>
+
+<delete id="delete" parameterType="int">
+	delete 	from jdbc_board where board_no = #{no}
+</delete>
+
+<select id="check" parameterType="BoardVO" resultType="int">
+	select 	count(*) as cnt
+	from	jdbc_board
+	where	board_no = #{no}
+</select>
+
+<select id="selectList"  resultMap="BoardMap">
+	select 	*
+	from	jdbc_board
+</select>
+
+<select id="search" parameterType="BoardVO" resultMap="BoardMap">
+	select 	*
+	from	jdbc_board
+	where	1=1
+	<if test="no != 0">
+	and		board_no = #{no}
+	</if>
+	<if test="title != null and title != ''">
+	and		board_title = #{title}
+	</if>
+	<if test="writer != null and writer != ''">
+	and		board_writer = #{writer}
+	</if>
+	<if test="content != null and content != ''">
+	and		board_content like '%'|| #{content} ||'%'
+	</if>
+</select>
+
+</mapper>
