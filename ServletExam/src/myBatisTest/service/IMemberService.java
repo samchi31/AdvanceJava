@@ -26,6 +26,13 @@ public interface IMemberService {
 	public boolean checkMember(String memId);
 	
 	/**
+	 * 회원정보
+	 * @param memId 확인할 회원의 ID
+	 * @return 회원정보
+	 */
+	public MemberVO getMember(String memId);
+	
+	/**
 	 * 회원정보를 수정하는 메서드
 	 * @param mv update할 회원의 정보가 저장된 객체
 	 * @return 작업 성공 : 1, 작업 실패 : 0

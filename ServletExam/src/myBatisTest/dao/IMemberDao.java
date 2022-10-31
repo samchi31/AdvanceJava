@@ -51,4 +51,11 @@ public interface IMemberDao {
 	 * @return 검색된 결과 리스트
 	 */
 	public List<MemberVO> searchMember(MemberVO mv);
+	
+	/**
+	 * memId를 이용하여 회원정보를 검색하는 메서드
+	 * @param mv 검색정보 데이터
+	 * @return 회원정보
+	 */
+	public MemberVO getMember(String memId);
 }
