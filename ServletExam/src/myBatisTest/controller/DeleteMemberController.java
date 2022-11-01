@@ -22,7 +22,12 @@ public class DeleteMemberController extends HttpServlet {
 		// 서비스 객체 생성
 		IMemberService memService = MemberServiceImpl.getInstance();
 		int cnt = memService.removeMember(memId);
-
+		String msg = "실패";
+		if(cnt > 0 ) {
+			msg="성공";
+		} 
+		// req 객체는 리다이렉트로 인해서 insert 후 소멸함 list.do 까지 정보를 유지하기위해 세션사용
+		req.getSession().setAttribute("msg", msg);
 		// 리다이렉트
 		resp.sendRedirect(req.getContextPath() + "/member/list.do");
 	}

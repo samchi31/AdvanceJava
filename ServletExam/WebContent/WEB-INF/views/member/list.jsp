@@ -4,6 +4,9 @@
 	pageEncoding="UTF-8"%>
 <%
 	List<MemberVO> memList = (List<MemberVO>) request.getAttribute("memList");
+
+	String msg = session.getAttribute("msg") == null ? "" : (String) session.getAttribute("msg");
+	session.removeAttribute("msg");	// 세션은 계속 유지되니 속성값 삭제
 %>
 
 <!DOCTYPE html>
@@ -21,32 +24,45 @@
 			<th>주소</th>
 		</tr>
 
-<%
-		int memSize = memList.size();
+		<%
+			int memSize = memList.size();
 		if (memSize > 0) {
 			for (int i = 0; i < memSize; i++) {
-%>
+		%>
 		<tr>
-			<td><%out.print(memList.get(i).getMemId()); %></td>
-			<td><a href ="detail.do?memId=<%= memList.get(i).getMemId() %>"><%= memList.get(i).getMemName() %></a></td>
-			<td><%= memList.get(i).getMemTel() %></td>
-			<td><%= memList.get(i).getMemAddr() %></td>
+			<td>
+				<%
+					out.print(memList.get(i).getMemId());
+				%>
+			</td>
+			<td><a href="detail.do?memId=<%=memList.get(i).getMemId()%>"><%=memList.get(i).getMemName()%></a></td>
+			<td><%=memList.get(i).getMemTel()%></td>
+			<td><%=memList.get(i).getMemAddr()%></td>
 		</tr>
-<%
+		<%
 			}
 		} else {
-%>	
+		%>
 		<tr>
 			<td colspan="4">조회된 데이터가 없습니다</td>
 		</tr>
-<%			
-		}
-%>
+		<%
+			}
+		%>
 		<tr align="center">
 			<td colspan="4"><a href="insert.do">[회원 등록]</a></td>
 		</tr>
 
 	</table>
 
+	<%
+		if (msg.equals("성공")) {
+	%>
+	<script>
+		alert("정상적으로 처리되었습니다")
+	</script>
+	<%
+		}
+	%>
 </body>
 </html>
