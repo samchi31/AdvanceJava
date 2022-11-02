@@ -20,7 +20,7 @@ public class UploadController2 extends HttpServlet {
 	private static final String UPLOAD_DIR = "upload_files";
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		// Multipart Parsing 전에 파라미터 정보 조회해 보기
 		System.out.println("Multipart Parsing 전 => " + req.getParameter("sender"));
 
@@ -32,16 +32,20 @@ public class UploadController2 extends HttpServlet {
 			uploadDir.mkdir();
 		}
 		
-		String fileName = "";
-		for(Part part : req.getParts()) {
-			System.out.println(part.getHeader("content-disposition"));
-			
-			fileName = getFileName(part);
-			if(fileName != null && !fileName.equals("")) {
-				// 폼필드가 아니거나 파일이 비어있지 않은경우...
-				part.write(uploadPath + File.separator + fileName); // 파일저장
-				System.out.println(uploadPath + File.separator + fileName + " => 저장완료!!!");
+		try {
+			String fileName = "";
+			for(Part part : req.getParts()) {
+				System.out.println(part.getHeader("content-disposition"));
+				
+				fileName = getFileName(part);
+				if(fileName != null && !fileName.equals("")) {
+					// 폼필드가 아니거나 파일이 비어있지 않은경우...
+					part.write(uploadPath + File.separator + fileName); // 파일저장
+					System.out.println(uploadPath + File.separator + fileName + " => 저장완료!!!");
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

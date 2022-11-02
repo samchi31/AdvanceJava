@@ -30,14 +30,14 @@
 
 <insert id="insertMember" parameterType = "MemberVO">
 
-	INSERT INTO mymember (mem_id, mem_name, mem_tel, mem_addr, reg_dt) 
-	VALUES ( #{memId}, #{memName}, #{memTel}, #{memAddr, jdbcType = VARCHAR}, SYSDATE )
+	INSERT INTO mymember (mem_id, mem_name, mem_tel, mem_addr, reg_dt, atch_file_id) 
+	VALUES ( #{memId}, #{memName}, #{memTel}, #{memAddr, jdbcType = VARCHAR}, SYSDATE, #{atchFileId} )
 
 </insert>
 
 <update id="updateMember" parameterType = "MemberVO">
 	UPDATE mymember 
-	SET mem_name = #{memName},  mem_tel = #{memTel},  mem_addr = #{memAddr}  
+	SET mem_name = #{memName},  mem_tel = #{memTel},  mem_addr = #{memAddr}, atch_file_id = #{atchFileId}
 	WHERE mem_id = #{memId}
 </update>
 
@@ -58,7 +58,8 @@
 	select  mem_id as memId,
 			mem_name as memName,
 			mem_tel as memTel,
-			mem_addr as memAddr 
+			mem_addr as memAddr ,
+			atch_file_id as atchFileId
 	from 	mymember
 	where	mem_id = #{m}
 </select>
@@ -75,6 +76,7 @@
 	<result column="mem_name" property="memName"/>
 	<result column="mem_tel" property="memTel"/>
 	<result column="mem_addr" property="memAddr"/>
+	<result column="atch_file_id" property="atchFileId"/>
 </resultMap>
 
 <select id="searchMember" parameterType="MemberVO" resultMap="memberMap">

@@ -3,15 +3,20 @@ package myBatisTest.controller;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import myBatisTest.MemberVO;
+import myBatisTest.common.AtchFileVO;
+import myBatisTest.common.service.AtchFileServiceImpl;
+import myBatisTest.common.service.IAtchFileService;
 import myBatisTest.service.IMemberService;
 import myBatisTest.service.MemberServiceImpl;
 
+@MultipartConfig
 @WebServlet("/member/insert.do")
 public class InsertMemberController extends HttpServlet{
 	@Override
@@ -31,12 +36,22 @@ public class InsertMemberController extends HttpServlet{
 		String memAddr = req.getParameter("memAddr");
 		
 		// 서비스 객체 생성
+		IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+		AtchFileVO atchFileVO = new AtchFileVO();
+		//첨부파일목록 저장(공통기능)
+		try {		//????
+			atchFileVO = fileService.saveAtchFileList(req);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		IMemberService memService = MemberServiceImpl.getInstance();
 		MemberVO mv = new MemberVO();
 		mv.setMemId(memId);
 		mv.setMemName(memName);
 		mv.setMemTel(memTel);
 		mv.setMemAddr(memAddr);
+		mv.setAtchFileId(atchFileVO.getAtchFileId());
 		
 		int cnt = memService.registMember(mv);
 		String msg = "실패";

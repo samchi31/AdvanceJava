@@ -16,6 +16,8 @@ public class MemberVO {
 	private String memTel;
 	private String memAddr;
 	private Date regDate;
+	private long atchFileId = -1;
+
 	public MemberVO() {
 	}
 	public MemberVO(String memId, String memName, String memTel, String memAddr) {
@@ -53,6 +55,12 @@ public class MemberVO {
 	}
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
+	}
+	public long getAtchFileId() {
+		return atchFileId;
+	}
+	public void setAtchFileId(long atchFileId) {
+		this.atchFileId = atchFileId;
 	}
 	@Override
 	public String toString() {

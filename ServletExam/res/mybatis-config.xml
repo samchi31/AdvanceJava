@@ -21,6 +21,7 @@
 
 	<typeAliases>
 		<typeAlias type="myBatisTest.MemberVO" alias="MemberVO" />
+		<typeAlias type="myBatisTest.common.AtchFileVO" alias="AtchFileVO" />
 	</typeAliases>
 
 	<environments default="dev">
@@ -49,5 +50,6 @@
 
 	<mappers>
 		<mapper resource="mappers/member.xml" />
+		<mapper resource="mappers/atchFile.xml" />
 	</mappers>
 </configuration>
