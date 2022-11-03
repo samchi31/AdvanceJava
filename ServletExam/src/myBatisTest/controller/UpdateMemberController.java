@@ -1,17 +1,23 @@
 package myBatisTest.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import myBatisTest.MemberVO;
+import myBatisTest.common.AtchFileVO;
+import myBatisTest.common.service.AtchFileServiceImpl;
+import myBatisTest.common.service.IAtchFileService;
 import myBatisTest.service.IMemberService;
 import myBatisTest.service.MemberServiceImpl;
 
+@MultipartConfig
 @WebServlet("/member/update.do")
 public class UpdateMemberController extends HttpServlet {
 	@Override
@@ -23,6 +29,16 @@ public class UpdateMemberController extends HttpServlet {
 		// 서비스 객체 생성
 		IMemberService memService = MemberServiceImpl.getInstance();
 		MemberVO mv = memService.getMember(memId);
+		
+		if(mv.getAtchFileId()>0) {	// 첨부파일이 존재하면...
+			// 첨부파일 목록 조회
+			IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+			AtchFileVO atchFileVO = new AtchFileVO();
+			atchFileVO.setAtchFileId(mv.getAtchFileId());
+			
+			List<AtchFileVO> atchFileList = fileService.getAtchFileList(atchFileVO);
+			req.setAttribute("atchFileList", atchFileList);
+		}
 
 		req.setAttribute("mv", mv);
 
@@ -38,15 +54,27 @@ public class UpdateMemberController extends HttpServlet {
 		String memName = req.getParameter("memName");
 		String memTel = req.getParameter("memTel");
 		String memAddr = req.getParameter("memAddr");
+		long atchFileId = Long.parseLong(req.getParameter("atchFileId"));
 
 		// 서비스 객체 생성
 		IMemberService memService = MemberServiceImpl.getInstance();
+		IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+		AtchFileVO atchFileVO = new AtchFileVO();
+		//첨부파일목록 저장(공통기능)
+		atchFileVO = fileService.saveAtchFileList(req);
+		
 		MemberVO mv = new MemberVO();
 		mv.setMemId(memId);
 		mv.setMemName(memName);
 		mv.setMemTel(memTel);
 		mv.setMemAddr(memAddr);
-
+		if(atchFileVO == null) {	// 첨부파일 그대로인 경우
+			mv.setAtchFileId(atchFileId);
+		} else {								// 첨부파일 변경이 일어난 경우
+			mv.setAtchFileId(atchFileVO.getAtchFileId());
+		}
+		
+		
 		int cnt = memService.modifyMember(mv);
 		String msg = "실패";
 		if(cnt > 0 ) {

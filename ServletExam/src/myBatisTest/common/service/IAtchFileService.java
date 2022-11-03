@@ -17,7 +17,7 @@ public interface IAtchFileService {
 	 * @return
 	 * @throws Exception
 	 */
-	public AtchFileVO saveAtchFileList(HttpServletRequest req) throws Exception;
+	public AtchFileVO saveAtchFileList(HttpServletRequest req);
 	
 	/**
 	 * 첨부파일 목록 조회하기

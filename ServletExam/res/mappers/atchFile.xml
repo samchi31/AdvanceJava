@@ -36,7 +36,7 @@
       ,#{streFileNm}
       ,#{orignlFileNm}
       ,#{fileExtsn}
-      ,#{fileSn}
+      ,#{fileCn}
       ,#{fileSize}
       )
 
@@ -52,5 +52,6 @@
 		select *
 		from atch_file_detail
 		where file_sn=#{fileSn}
+		and atch_file_id=#{atchFileId}
 	</select>
 </mapper>
